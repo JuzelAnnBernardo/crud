@@ -31,10 +31,21 @@ const mutations = {
 };
 
 const actions = {
-  async getUserIndex({ getters }, user) {
-    const { id } = user;
-    const index = getters.users.findIndex(u => u.id === id);
-    console.log("getUserIndex", index);
+  async getUserIndex({ getters }, selectedUser) {
+    // const { id } = selectedUser;
+    const getUserIndexById = user => {
+      console.log(user);
+      console.log(
+        "PAREHAS BA NG ID",
+        user.id,
+        selectedUser.id,
+        user.id === selectedUser.id
+      );
+      return user.id === selectedUser.id;
+    };
+    const index = getters.users.findIndex(getUserIndexById);
+
+    console.log("ETO INDEX KO", index, "ETO ID KO", selectedUser.id);
     return index;
   },
   async getUsers({ commit }) {
@@ -47,15 +58,15 @@ const actions = {
   async createUser({ commit }, user) {
     commit("CREATE_USER", user);
   },
-  async updateUser({ commit, dispatch }, user) {
-    const index = await dispatch("getUserIndex", user);
+  async updateUser({ commit, dispatch }, selectedUser) {
+    const index = await dispatch("getUserIndex", selectedUser);
     commit("UPDATE_USER", {
       index,
-      user
+      user: selectedUser
     });
   },
-  async deleteUser({ commit, dispatch }, user) {
-    const index = await dispatch("getUserIndex", user);
+  async deleteUser({ commit, dispatch }, selectedUser) {
+    const index = await dispatch("getUserIndex", selectedUser);
     commit("DELETE_USER", index);
   }
 };
