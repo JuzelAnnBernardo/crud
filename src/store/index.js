@@ -31,9 +31,9 @@ const mutations = {
 };
 
 const actions = {
-  async getUserIndex({ getters }, payload) {
-    const { id } = payload;
-    const index = getters.users.findIndex(user => user.id === id);
+  async getUserIndex({ getters }, user) {
+    const { id } = user;
+    const index = getters.users.findIndex(u => u.id === id);
     console.log("getUserIndex", index);
     return index;
   },
@@ -44,18 +44,18 @@ const actions = {
     // const data = response.data
     commit("SET_USERS", data);
   },
-  async createUser({ commit }, payload) {
-    commit("CREATE_USER", payload);
+  async createUser({ commit }, user) {
+    commit("CREATE_USER", user);
   },
-  async updateUser({ commit, dispatch }, payload) {
-    const index = await dispatch("getUserIndex", payload);
+  async updateUser({ commit, dispatch }, user) {
+    const index = await dispatch("getUserIndex", user);
     commit("UPDATE_USER", {
       index,
-      user: payload
+      user
     });
   },
-  async deleteUser({ commit, dispatch }, payload) {
-    const index = await dispatch("getUserIndex", payload);
+  async deleteUser({ commit, dispatch }, user) {
+    const index = await dispatch("getUserIndex", user);
     commit("DELETE_USER", index);
   }
 };
